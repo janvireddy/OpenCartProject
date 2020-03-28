@@ -2,10 +2,14 @@ package OpenCartPages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import Utilities.DriverWait;
 
 public class Shopping_Cart 
 {
 WebDriver dr;
+DriverWait wait;
 String productName=null;
 String productPrice=null;
 	
@@ -13,12 +17,22 @@ String productPrice=null;
 	public Shopping_Cart(WebDriver dr)
 	{
 		this.dr=dr;
+		wait=new DriverWait(dr);
 	}
 	
+	
+	       //Locators used in this Shopping Cart page
+			By clickOnShoppingCart=By.xpath("//*[@id='top-links']/ul/li[4]/a");
+			By addedProduct=By.xpath("//*[@id='content']//following::a[2]");
+			By removeProduct=By.xpath("//*[@id='content']/form/div/table/tbody/tr[2]/td[4]/div/span/button[2]");
+			By addedProductPrice=By.xpath("//*[@id='content']/form/div/table/tbody/tr/td[6]");
+
+				
 	//Searches for the added product and returns its name
 	public String view_Shopping_Cart()
 	{
-	    dr.findElement(By.xpath("//*[@id='top-links']/ul/li[4]/a")).click();//Clicks on shopping cart icon
+		WebElement element=wait.elementToBeClickable(clickOnShoppingCart, 40);
+	    element.click();//Clicks on shopping cart icon
 	    
 	    try 
 	    {
@@ -29,7 +43,9 @@ String productPrice=null;
 			e.printStackTrace();
 		}
 	    
-		productName=dr.findElement(By.xpath("//*[@id='content']//following::a[2]")).getText();//Gets the name of the added product
+	    
+	    WebElement element1=wait.elementToBdVisible(addedProduct, 40);
+		productName=element1.getText();//Gets the name of the added product
 		
 		return productName;//returns added prodcut name
 	}
@@ -37,7 +53,9 @@ String productPrice=null;
 	//To remove the added product from the shopping cart
 	public String remove_product()
 	{
-	    dr.findElement(By.xpath("//*[@id=\"content\"]/form/div/table/tbody/tr[2]/td[4]/div/span/button[2]")).click();//clicks on the remove product
+		
+		WebElement element=wait.elementToBeClickable(removeProduct, 40);
+	    element.click();//clicks on the remove product
 	    
 	    try 
 	    {
@@ -48,7 +66,9 @@ String productPrice=null;
 			e.printStackTrace();
 		}
 	    
-		productPrice=dr.findElement(By.xpath("//*[@id=\"content\"]/form/div/table/tbody/tr/td[6]")).getText();//Gets the price of the product still present in the cart
+	    
+	    WebElement element1=wait.elementToBdVisible(addedProductPrice, 40);
+		productPrice=element1.getText();//Gets the price of the product still present in the cart
 		
 		return productPrice;//returns the readed product price
 	}

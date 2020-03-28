@@ -2,26 +2,43 @@ package OpenCartPages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import Utilities.DriverWait;
 
 public class Tablets
 {
 	WebDriver dr;
+	DriverWait wait;
 	String productName=null;
 	
 	 //To assign the local dr with the browser launched dr
 	public Tablets(WebDriver dr)
 	{
 		this.dr=dr;
+		wait=new DriverWait(dr);
 	}
 	
+	
+	//Locators used in this Tablets page
+		By selectTablets=By.xpath("//*[@id='menu']/div[2]/ul/li[4]/a");
+		By firstProduct=By.xpath("//*[@id='content']//following::a[3]");
+		By addFirstProduct=By.xpath("//*[@class='button-group']//following::button[1]");
+		
+			
 	//Adds product from the Tablets category
 	public String add_Tablets_To_Cart()
 	{
-		dr.findElement(By.xpath("//*[@id='menu']/div[2]/ul/li[4]/a")).click();//Clicks on Tablets icon
+		WebElement element=wait.elementToBeClickable(selectTablets, 40);
+		element.click();//Clicks on Tablets icon
 		
-		productName=dr.findElement(By.xpath("//*[@id='content']//following::a[3]")).getText();//Gets the name of the first product displayed
 		
-		dr.findElement(By.xpath("//*[@class='button-group']//following::button[1]")).click();//Adds the displayed first product to the cart
+		WebElement element1=wait.elementToBdVisible(firstProduct, 40);
+		productName=element1.getText();//Gets the name of the first product displayed
+		
+		
+		WebElement element2=wait.elementToBeClickable(addFirstProduct, 40);
+		element2.click();//Adds the displayed first product to the cart
 		
 		try 
 		{
